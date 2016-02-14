@@ -7,18 +7,19 @@ var ApiUtil = require('../util/apiUtil')
 module.exports = React.createClass({
   // mixins: [LinkedStateMixin],
   _search: function(e){
+    console.log("DeveloperWeek");
       e.preventDefault();
       var searchTerm = document.querySelector("#searchTerm").value;
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
   componentDidMount: function(e){
-    this._search("DeveloperWeek");
+    ApiUtil.getRecentTweetsBy("@DeveloperWeek");
   },
   render: function () {
     return(
       <form onSubmit={this._search}>
         @<input id="searchTerm" type="text" value="DeveloperWeek"></input>
-          <input type="submit" value="Submit"></input>
+      <button type="submit" value="Submit">Search</button>
       </form>
     );
   }

@@ -43,16 +43,32 @@ class Api::AuthorsController < ApplicationController
 
     @keyword_hash = Hash[keywords.map {|x| [x, Array.new]}]
 
+    seen_text = [];
+
     @tweets.each do |tweet|
-      tweet.text.split(" ").each do |word|
-        word = word.downcase
-        if @keyword_hash[word]
-          # had trouble with JS rounding this number
-          # also in view, should consolidate
-          @keyword_hash[word] << tweet.id/10000
+      tweet_text = tweet.text.downcase
+      if(seen_text.include?(tweet_text))
+        return
+      end
+      seen_text << tweet_text  #no duplicates
+      keywords.each do |keyword|
+        if(tweet_text.include?(keyword))
+          @keyword_hash[keyword] << tweet.id/10000
         end
       end
     end
+
+
+    # @tweets.each do |tweet|
+    #   tweet.text.split(" ").each do |word|
+    #     word = word.downcase
+    #     if @keyword_hash[word]
+    #       # had trouble with JS rounding this number
+    #       # also in view, should consolidate
+    #       @keyword_hash[word] << tweet.id/10000
+    #     end
+    #   end
+    # end
 
     # result = HTTParty.get(
     #         "http://api.cortical.io/rest/retinas",

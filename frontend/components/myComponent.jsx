@@ -14,6 +14,12 @@ module.exports = React.createClass({
     this.tweetListener = TweetStore.addListener(this._updateTweets);
     $("#vis").on( "click", function(e){
       var keyword = e.target.textContent
+      if(!e.target.parentElement.classList.contains("gnode")){
+        return;
+      }
+      if(!keyword){
+        var keyword = e.target.parentElement.children[1].textContent
+      }
       var tweetIds = TweetStore.keyword_hash()[keyword];
 
       var tweets = TweetStore.tweets();
@@ -22,7 +28,8 @@ module.exports = React.createClass({
         selectedTweets.push(tweets[id].text);
       });
 
-      that.setState({tweets: selectedTweets})
+      that.setState({tweets: selectedTweets});
+      window.scrollTo(0,document.body.scrollHeight);
     });
   },
   _updateTweets: function(){
@@ -32,7 +39,7 @@ module.exports = React.createClass({
     var data = [];
     var i = 0;
     for (keyword in keyword_hash) {
-      data.push({word: keyword, id: i, total_amount: keyword_hash[keyword].length, group: "low", tweet_ids: keyword_hash[keyword]})
+      data.push({word: keyword, id: i, total_amount: keyword_hash[keyword].length+1, group: "low", tweet_ids: keyword_hash[keyword]})
       console.log(keyword_hash[keyword]);
       i++;
     }
@@ -69,7 +76,9 @@ module.exports = React.createClass({
         </ul>
         <div className="loader spinner">Loading...</div>
         <div id="vis"></div>
-        {formatedTweets}
+        <div id="tweets">
+          {formatedTweets}
+        </div>
       </div>
     );
   }

@@ -27,10 +27,20 @@ ul#twitterAccounts li{
   margin: 1em;
 }
 
+h1{
+  color: #0dc5c1;
+}
+
 input#searchTerm, input[type="submit"] {
     font-size: 2em;
 }
 
+button {
+  font-size: 2em;
+}
+form span{
+  font-size: 2em;
+}
 svg#svg_vis{
   opacity: .7;
 }
@@ -41,5 +51,15 @@ svg#svg_vis{
 }
 
 .link:hover{
-  color: blue
+  color: #0dc5c1;
+}
+
+#tweets{
+  width: 800px;
+  margin: auto;
+  font-size: 1.4em;
+}
+
+ul#twitterAccounts {
+    margin-left: -70px;
 }

@@ -28,7 +28,7 @@ var CustomTooltip = require('./customTooltip.js');
       var max_amount;
       this.data = data;
       this.width = 940;
-      this.height = 600;
+      this.height = 500;
       this.tooltip = CustomTooltip("gates_tooltip", 240);
       this.center = {
         x: this.width / 2,
