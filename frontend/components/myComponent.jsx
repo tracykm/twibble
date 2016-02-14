@@ -22,7 +22,6 @@ module.exports = React.createClass({
         selectedTweets.push(tweets[id].text);
       });
 
-      debugger
       that.setState({tweets: selectedTweets})
     });
   },
@@ -33,7 +32,7 @@ module.exports = React.createClass({
     var data = [];
     var i = 0;
     for (keyword in keyword_hash) {
-      data.push({word: keyword, id: i, total_amount: keyword_hash[keyword].length+2, group: "low", tweet_ids: keyword_hash[keyword]})
+      data.push({word: keyword, id: i, total_amount: keyword_hash[keyword].length, group: "low", tweet_ids: keyword_hash[keyword]})
       console.log(keyword_hash[keyword]);
       i++;
     }

@@ -11,10 +11,13 @@ module.exports = React.createClass({
       var searchTerm = document.querySelector("#searchTerm").value;
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
+  componentDidMount: function(e){
+    this._search("DeveloperWeek");
+  },
   render: function () {
     return(
       <form onSubmit={this._search}>
-        @<input id="searchTerm" type="text"></input>
+        @<input id="searchTerm" type="text" value="DeveloperWeek"></input>
           <input type="submit" value="Submit"></input>
       </form>
     );
