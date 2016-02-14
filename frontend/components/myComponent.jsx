@@ -20,6 +20,7 @@ module.exports = React.createClass({
       if(!keyword){
         var keyword = e.target.parentElement.children[1].textContent
       }
+      this.keyword = keyword;
       var tweetIds = TweetStore.keyword_hash()[keyword];
 
       var tweets = TweetStore.tweets();
@@ -54,6 +55,7 @@ module.exports = React.createClass({
         searchTerm = e.target
       }
       document.querySelector("#searchTerm").value = searchTerm;
+      this.setState({twees: []})
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
   render: function (e) {
@@ -70,7 +72,7 @@ module.exports = React.createClass({
     return(
       <div>
         <h1>Visualize Twitter Accounts</h1>
-        <SearchForm/>
+        <SearchForm keyword={this.keyword}/>
         <ul onClick={this._search} id="twitterAccounts">
           {twitterAccounts}
         </ul>

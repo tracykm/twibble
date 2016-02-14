@@ -18,7 +18,7 @@ module.exports = React.createClass({
   render: function () {
     return(
       <form onSubmit={this._search}>
-        @<input id="searchTerm" type="text" value="DeveloperWeek"></input>
+        @<input id="searchTerm" type="text" value={this.props.keyword}></input>
       <button type="submit" value="Submit">Search</button>
       </form>
     );
