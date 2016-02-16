@@ -1,4 +1,5 @@
 require 'httparty'
+require 'json'
 
 
 
@@ -23,16 +24,14 @@ class Api::AuthorsController < ApplicationController
     tweet_text = tweet_text.gsub(/http:\/\/[\w\.:\/]+/, '')
     tweet_text = tweet_text.gsub(/https:\/\/[\w\.:\/]+/, '')
 
+    keywords = HTTParty.post(
+            "http://api.cortical.io:80/rest/text/keywords?retina_name=en_synonymous",
+            :headers => {
+               "api-key" => "b15cf6d0-d2ed-11e5-8378-4dad29be0fab",
+            },
+            :body => tweet_text
+    ).parsed_response;
 
-    # curl --data @order_new.json \
-    #      -H "X-Augury-Token:My_token_goes_here" \
-    #      -H "Content-Type:application/json" \
-    #      http://staging.hub.spreecommerce.com/api/stores/store_id_goes_here/messages
-    #
-    # curl -X GET -H "api-key: b15cf6d0-d2ed-11e5-8378-4dad29be0fab" "http://api.cortical.io/rest/retinas"
-    #
-
-    # fail
     keywords = HTTParty.post(
             "http://api.cortical.io:80/rest/text/keywords?retina_name=en_synonymous",
             :headers => {
@@ -57,30 +56,64 @@ class Api::AuthorsController < ApplicationController
         end
       end
     end
+  end
+
+  def compare
+    author1 = params[:user_1]
+    author2 = params[:user_2]
+
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key = "fXcZzKOXmZjY4iE0ImeETmEXh"
+      config.consumer_secret = "ADePCTpqAhJezCN0MpsIzKJVCecrgfTURGu079RVeJSHcJfLuB"
+      config.access_token = "3031279493-GYA814kt8GaKESYF5PuMtxAW5vRJ3q6D6es714n"
+      config.access_token_secret = "ediZdDzg72XidcZLHyEvcexpw7TsgBovkrjpuc4hqLT8X"
+    end
+
+    @tweets1 = client.user_timeline(author1, :count => 20)
+    @tweets2 = client.user_timeline(author2, :count => 20)
+
+    tweet_text1 = ""
+
+    @tweets1.each do |tweet|
+      tweet_text1 += tweet.text
+    end
+
+    tweet_text2 = ""
+
+    @tweets2.each do |tweet|
+      tweet_text2 += tweet.text
+    end
+
+    tweet_text1 = tweet_text1.gsub(/http:\/\/[\w\.:\/]+/, '')
+    tweet_text2 = tweet_text2.gsub(/https:\/\/[\w\.:\/]+/, '')
 
 
-    # @tweets.each do |tweet|
-    #   tweet.text.split(" ").each do |word|
-    #     word = word.downcase
-    #     if @keyword_hash[word]
-    #       # had trouble with JS rounding this number
-    #       # also in view, should consolidate
-    #       @keyword_hash[word] << tweet.id/10000
-    #     end
-    #   end
-    # end
+    keywords = HTTParty.post(
+            "http://api.cortical.io:80/rest/compare?retina_name=en_associative",
+            :headers => {
+               "api-key" => "b15cf6d0-d2ed-11e5-8378-4dad29be0fab",
+            },
+            :body => JSON.generate([tweet_text1, tweet_text2])
+            ).parsed_response;
 
-    # result = HTTParty.get(
-    #         "http://api.cortical.io/rest/retinas",
-    #         :headers => {
-    #            "api-key" => "b15cf6d0-d2ed-11e5-8378-4dad29be0fab",
-    #         }
-    # );
 
-    # client = Cortical::REST::Client.new do |config|
-    #   config.api-key: "b15cf6d0-d2ed-11e5-8378-4dad29be0fab"
-    # end
 
+    @keyword_hash = Hash[keywords.map {|x| [x, Array.new]}]
+
+    seen_text = [];
+
+    @tweets.each do |tweet|
+      tweet_text = tweet.text.downcase
+      if(seen_text.include?(tweet_text))
+        return
+      end
+      seen_text << tweet_text  #no duplicates
+      keywords.each do |keyword|
+        if(tweet_text.include?(keyword))
+          @keyword_hash[keyword] << tweet.id/10000
+        end
+      end
+    end
   end
 end
 

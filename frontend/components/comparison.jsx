@@ -7,7 +7,6 @@ var ApiUtil = require('../util/apiUtil')
 
 module.exports = React.createClass({
   getInitialState: function () {
-    // this.keyword = "DeveloperWeek"
     return( {tweets: []} )
   },
   componentDidMount: function(){
@@ -45,10 +44,6 @@ module.exports = React.createClass({
       console.log(keyword_hash[keyword]);
       i++;
     }
-    if(data === []){
-      $("#tweets").text = "No user found";
-      alert("no tweets");
-    }
     // console.log(TweetStore.words());
     makeBubbleChart.clear();
     makeBubbleChart.render(data);
@@ -68,7 +63,7 @@ module.exports = React.createClass({
       return (<p>{tweet}</p>);
     })
     console.log(formatedTweets);
-    twitterAccounts = ["chuck_facts", "DeathStarPR", "TheTweetOfGod", "kellyoxford", "MensHumor", "carellquotes", "SenSanders"]
+    twitterAccounts = ["chuck_facts vs DeathStarPR", "TheTweetOfGod vs kellyoxford", "MensHumor vs SenSanders"]
     twitterAccounts = twitterAccounts.map(function(account){
       return(
         <li className="link">@{account}</li>
