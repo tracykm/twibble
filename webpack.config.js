@@ -19,18 +19,18 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loaders: ['babel-loader']
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel',
+        query: {
+          presets: ['react']
+        }
       },
       {
-        test: /\.jsx$/,
-        loaders: ['babel-loader']
-      },
-      {
-        test: /\.html$/,
-        loader: "file?name=[name].[ext]"
+        test: /\.node$/,
+        loader: "node-loader",
+        loader: "source-map-loader"
       }
-    ]
+    ],
   }
 };
