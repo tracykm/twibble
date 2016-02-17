@@ -12,7 +12,7 @@ module.exports = React.createClass({
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
   componentDidMount: function(e){
-    // ApiUtil.getRecentTweetsBy("@DeveloperWeek");
+    ApiUtil.getRecentTweetsBy("@DeveloperWeek");
   },
   render: function () {
     return(

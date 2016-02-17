@@ -113,7 +113,7 @@ var CustomTooltip = require('./customTooltip.js');
               // return that.show_details(d, i, this);
             }).on("mouseover", function(d, i) {
               d3.select(this)
-              .attr('fill', '#fa5795')
+              .attr('fill', '#F55033')
             }).on("mouseout", function(d, i) {
               d3.select(this)
               .attr('fill', '#E82C0C')
@@ -127,7 +127,7 @@ var CustomTooltip = require('./customTooltip.js');
                                 return 'translate(' + [(d.name.length)*-4, 0] + ')';
                             }).on("mouseover", function(d, i) {
                               var circle = d3.select(this.parentNode).select('circle');
-                              circle.attr('fill', '#fa5795');
+                              circle.attr('fill', '#F55033');
                             }).on("mouseout", function(d, i) {
                               var circle = d3.select(this.parentNode).select('circle');
                               circle.attr('fill', '#E82C0C');
