@@ -107,12 +107,16 @@ var CustomTooltip = require('./customTooltip.js');
       .attr("id", function(d) {
         id = d.id;
         return "bubble_" + d.id;
-      }).attr("fill", colors[ (Math.floor(Math.random() * 4) + 1 ) ]).on("mouseover", function(d, i) {
+      }).attr("fill", "#E82C0C").on("mouseover", function(d, i) {
               // that.show_name(d, i, this);
               // this.attr("fill", "black")
               // return that.show_details(d, i, this);
+            }).on("mouseover", function(d, i) {
+              d3.select(this)
+              .attr('fill', '#fa5795')
             }).on("mouseout", function(d, i) {
-              // return that.hide_details(d, i, this);
+              d3.select(this)
+              .attr('fill', '#E82C0C')
             });
 
 
@@ -120,7 +124,13 @@ var CustomTooltip = require('./customTooltip.js');
       var labels = this.gnodes.append("text")
                          .text(function(d) { return (d.name); })
                          .attr("transform", function(d) {
-                                return 'translate(' + [(d.radius/2)*-1, 0] + ')';
+                                return 'translate(' + [(d.name.length)*-4, 0] + ')';
+                            }).on("mouseover", function(d, i) {
+                              var circle = d3.select(this.parentNode).select('circle');
+                              circle.attr('fill', '#fa5795');
+                            }).on("mouseout", function(d, i) {
+                              var circle = d3.select(this.parentNode).select('circle');
+                              circle.attr('fill', '#E82C0C');
                             });
 
       // this.gnodes.attr("transform", function(d) {

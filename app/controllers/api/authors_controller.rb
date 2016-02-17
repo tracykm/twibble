@@ -13,7 +13,7 @@ class Api::AuthorsController < ApplicationController
       config.access_token_secret = "ediZdDzg72XidcZLHyEvcexpw7TsgBovkrjpuc4hqLT8X"
     end
 
-    @tweets = client.user_timeline(author, :count => 20)
+    @tweets = client.user_timeline(author, :count => 50)
 
     tweet_text = ""
 

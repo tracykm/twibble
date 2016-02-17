@@ -14,7 +14,7 @@
  *= require_self
  */
 html{
-  background: url("skulls.png");
+  background: url("ignasi_pattern_s.png");
 }
  #main{
    width: 900px;
@@ -42,7 +42,7 @@ form span{
   font-size: 2em;
 }
 svg#svg_vis{
-  opacity: .7;
+  /*opacity: .7;*/
 }
 
 .link{

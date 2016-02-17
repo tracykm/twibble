@@ -1,27 +1,30 @@
 var React = require('react');
 var AppDispatcher = require('../dispatcher/dispatcher.js');
 var TweetStore = require('../stores/tweetStore.js');
+window.TweetStore = require('../stores/tweetStore.js');
 var SearchForm = require('./searchForm')
 var makeBubbleChart = require('./../bubble.js');
 var ApiUtil = require('../util/apiUtil')
 
 module.exports = React.createClass({
   getInitialState: function () {
-    // this.keyword = "DeveloperWeek"
+    this.searchTerm = "DeveloperWeek"
     return( {tweets: []} )
   },
-  componentDidMount: function(){
+  componentDidMount: function(e){
     var that = this;
+    this._updateTweets();
     this.tweetListener = TweetStore.addListener(this._updateTweets);
     $("#vis").on( "click", function(e){
-      var keyword = e.target.textContent
       if(!e.target.parentElement.classList.contains("gnode")){
         return;
       }
+      var keyword = e.target.textContent
+      debugger
       if(!keyword){
         var keyword = e.target.parentElement.children[1].textContent
       }
-      this.keyword = keyword;
+      this.searchTerm = keyword;
       var tweetIds = TweetStore.keyword_hash()[keyword];
 
       var tweets = TweetStore.tweets();
@@ -55,19 +58,20 @@ module.exports = React.createClass({
     // this.setState({tweets: TweetStore.keyword_hash.keys()})
   },
   _search: function(e){
-      var searchTerm = e.target.textContent;
-      if(!searchTerm){
-        searchTerm = e.target
-      }
-      document.querySelector("#searchTerm").value = searchTerm;
-      this.setState({twees: []})
+      var searchTerm = this.searchTerm;
+      this.setState({tweets: []})
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
-  render: function (e) {
+  handleFavAccountClick: function(e){
+    var searchTerm = e.target.textContent;
+    document.querySelector("#searchTerm").value = searchTerm;
+    this.searchTerm = searchTerm
+    this._search();
+  },
+  render: function () {
     var formatedTweets = this.state.tweets.map(function(tweet){
       return (<p>{tweet}</p>);
     })
-    console.log(formatedTweets);
     twitterAccounts = ["chuck_facts", "DeathStarPR", "TheTweetOfGod", "kellyoxford", "MensHumor", "carellquotes", "SenSanders"]
     twitterAccounts = twitterAccounts.map(function(account){
       return(
@@ -77,7 +81,7 @@ module.exports = React.createClass({
     return(
       <div>
         <h1>Visualize Twitter Accounts</h1>
-        <SearchForm keyword={this.keyword}/>
+        <SearchForm searchTerm={this.searchTerm}/>
         <ul onClick={this._search} id="twitterAccounts">
           {twitterAccounts}
         </ul>
