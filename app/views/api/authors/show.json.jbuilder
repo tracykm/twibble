@@ -9,3 +9,5 @@ end
   #   json.partial!('tweet', tweet: tweet)
   # end
 # end
+
+json.author = @author

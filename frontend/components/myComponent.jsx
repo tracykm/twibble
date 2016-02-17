@@ -33,7 +33,7 @@ module.exports = React.createClass({
       });
 
       that.setState({tweets: selectedTweets});
-      window.scrollTo(0,document.body.scrollHeight);
+      $("html, body").animate({ scrollTop: $("#myID").scrollTop() + 600 }, 500);
     });
   },
   _updateTweets: function(){
