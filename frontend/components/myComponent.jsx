@@ -20,7 +20,6 @@ module.exports = React.createClass({
         return;
       }
       var keyword = e.target.textContent
-      debugger
       if(!keyword){
         var keyword = e.target.parentElement.children[1].textContent
       }
@@ -45,27 +44,24 @@ module.exports = React.createClass({
     var i = 0;
     for (keyword in keyword_hash) {
       data.push({word: keyword, id: i, total_amount: keyword_hash[keyword].length+1, group: "low", tweet_ids: keyword_hash[keyword]})
-      console.log(keyword_hash[keyword]);
       i++;
     }
     if(data === []){
       $("#tweets").text = "No user found";
       alert("no tweets");
     }
-    // console.log(TweetStore.words());
     makeBubbleChart.clear();
     makeBubbleChart.render(data);
     // this.setState({tweets: TweetStore.keyword_hash.keys()})
   },
   _search: function(e){
-      var searchTerm = this.searchTerm;
+      var searchTerm = document.querySelector("#searchTerm").value;
       this.setState({tweets: []})
       ApiUtil.getRecentTweetsBy("@"+searchTerm);
   },
   handleFavAccountClick: function(e){
     var searchTerm = e.target.textContent;
     document.querySelector("#searchTerm").value = searchTerm;
-    this.searchTerm = searchTerm
     this._search();
   },
   render: function () {
@@ -82,7 +78,7 @@ module.exports = React.createClass({
       <div>
         <h1>Visualize Twitter Accounts</h1>
         <SearchForm searchTerm={this.searchTerm}/>
-        <ul onClick={this._search} id="twitterAccounts">
+        <ul onClick={this.handleFavAccountClick} id="twitterAccounts">
           {twitterAccounts}
         </ul>
         <div className="loader spinner">Loading...</div>
